@@ -13,7 +13,7 @@ types:
     icon: "✨"
   - name: "项目相关"
     desc: "interview experiences"
-    link: "/Notes/刷题总结/总结"
+    link: "/Notes/动态线程池/1-项目简介"
     icon: "🏃"
 # flow: true
 ---

@@ -16,27 +16,27 @@
     <!-- 主体 -->
     <ul class="grid grid-cols-1 pt-6 mt-6 lg:gap-8 lg:grid-cols-3">
       <!-- 所有文章 -->
-      <div
-        :class="categories ? 'col-span-2' : 'col-span-3'"
-        class="order-2 pt-6 lg:pt-0 lg:order-1 lg:mt-0"
-      >
-        <h1
-          class="pb-2 text-3xl font-bold transition-all duration-300 border-b-4 border-sky-500 dark:border-sky-700 w-fit hover:pr-6"
-        >
-          ✨ 近期更新
-        </h1>
-        <div class="mt-4" :class="flow ? 'columns-1 lg:columns-2 gap-8' : ''">
-          <PostCard
-            v-for="(post, index) of posts"
-            :key="post.date.time"
-            :post="post"
-            :flow="flow"
-          ></PostCard>
-        </div>
-      </div>
+<!--      <div-->
+<!--        :class="categories ? 'col-span-2' : 'col-span-3'"-->
+<!--        class="order-2 pt-6 lg:pt-0 lg:order-1 lg:mt-0"-->
+<!--      >-->
+<!--        <h1-->
+<!--          class="pb-2 text-3xl font-bold transition-all duration-300 border-b-4 border-sky-500 dark:border-sky-700 w-fit hover:pr-6"-->
+<!--        >-->
+<!--          ✨ 近期更新-->
+<!--        </h1>-->
+<!--        <div class="mt-4" :class="flow ? 'columns-1 lg:columns-2 gap-8' : ''">-->
+<!--          <PostCard-->
+<!--            v-for="(post, index) of posts"-->
+<!--            :key="post.date.time"-->
+<!--            :post="post"-->
+<!--            :flow="flow"-->
+<!--          ></PostCard>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <!-- 文章分类 -->
-      <div v-if="categories || features" class="order-1 col-span-1 lg:order-2">
+      <div v-if="categories || features" class="order-1 col-span-3 lg:order-2 ">
         <Sidebar :types="categories"></Sidebar>
       </div>
     </ul>

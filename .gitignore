@@ -3,3 +3,6 @@ package-lock.json
 **/.vitepress/cache
 **/.vitepress/dist
 .idea/
+docs/.DS_Store
+docs/src/Notes/.DS_Store
+docs/src/Notes/*/.DS_Store

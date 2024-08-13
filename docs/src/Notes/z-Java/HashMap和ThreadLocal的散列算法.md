@@ -60,7 +60,7 @@ public static int disturbHashIdx(String key, int size) {
 
   > 扰动函数：
   >
-  > ![image-20240528200510047](images/image-20240528200510047.png)
+  > ![image-20240528200510047](img/image-20240528200510047.png)
   >
   > 1. 使用key.hashCode()计算hash值并赋值给变量h；
   >

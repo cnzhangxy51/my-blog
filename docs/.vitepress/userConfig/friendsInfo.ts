@@ -13,17 +13,17 @@ interface Friend {
  */
 export const friendsInfo: Friend[] = [
   {
-    avatar: "https://avatars.githubusercontent.com/u/108183563?v=4",
-    name: "ZzzRemake",
-    title: "🚀 全能 🐳",
-    link: "https://zzzremake.github.io/",
-    tag: "Research Associate",
+    avatar: "https://flxdu.cn/logo.png",
+    name: "付小锣",
+    title: "强大的计算机科学家🧐",
+    link: "https://flxdu.cn/",
+    tag: "C++/Go",
     color: "indigo",
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/29620619?v=4",
     name: "Yaossg",
-    title: "强大的计算机科学家🧐",
+    title: "🚀 全能 🐳",
     link: "https://Yaossg.com",
     tag: "DevOps",
     color: "pink",

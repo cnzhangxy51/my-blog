@@ -15,7 +15,7 @@ hero:
       link: /Notes/
     - theme: alt
       text: 查看项目 blog
-      link: /Notes/动态线程池/1-项目简介
+      link: /Notes/a-dt/1-项目简介
 
 features:
   - icon: ♨️

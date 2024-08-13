@@ -11,7 +11,7 @@ export default defineConfig({
 
   // 网站描述，有利于被搜索引擎捕获
   description:
-    "Java 开发技术分享.",
+    "z-Java 开发技术分享.",
 
   // md 文件根目录
   // 【谨慎修改】：一旦修改将引起较多变动

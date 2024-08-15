@@ -21,7 +21,7 @@ export const projectsInfo: Project[] = [
   },
   {
     banner: "/project-img/raffle.png",
-    title: "a-lucky",
+    title: "lucky-wheel",
     description:
         "基于DDD架构的抽奖系统",
     link: "https://lucky.xyfv.cn/?userId=fuming&activityId=100301",

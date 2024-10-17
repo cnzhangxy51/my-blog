@@ -10,6 +10,7 @@ export const fileName2Title: Record<string, string> = {
   // Interviews: "示例文件",
     "a-dt": "项目-动态线程池",
     "a-lucky": "项目-幸运转盘",
+    "b-ddd": "DDD架构",
     "b-leetcode": "刷题",
     "c-Nginx": "Nginx",
     "z-Java": "Java"

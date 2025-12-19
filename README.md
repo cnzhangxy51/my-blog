@@ -1,15 +1,128 @@
-<h1 align="center">🌀 easy-vitepress-blog 🏖️</h1>
+# 🏠 Lily's Blog
 
-基于 VitePress 快速搭建个人博客，自动化路由处理并预置了更加丰富的页面。
+基于 VitePress 构建的个人技术博客，专注于 Java 开发和编程技术分享。
 
-## ✨ 特性
+## ✨ 特性功能
 
-- **🚀 自动化路由脚本**：新增 Markdown 文件时无需手动设置路由，构建脚本会自动为你处理，你可以更专注于内容创作。
-- **📚 语法增强**：新增 `LinkCard` 组件，以卡片形式清晰地展示链接，提升阅读体验。
-- **🎯 友好的 Friends 页面**：方便快捷地展示友情链接。
-- **🌹 定制的 Projects 页面**：展示你在开发生涯中完成的高质量开源项目。
-- **🎨 优化 PDF 导出效果**：使用 Tailwind CSS 调整打印模式下的样式，使你能够导出更加美观的 PDF 文件。
+- **🚀 现代技术栈**：基于 VitePress + Vue 3 + TypeScript 构建
+- **🎨 精美主题**：使用 Tailwind CSS 定制的响应式设计
+- **📝 自动路由**：新增 Markdown 文件自动生成路由，专注内容创作
+- **🔍 全文搜索**：内置本地搜索功能，快速定位内容
+- **📖 数学公式支持**：集成 MathJax 3，完美支持数学公式渲染
+- **📱 响应式设计**：适配桌面端和移动端设备
+- **🎯 多页面支持**：博客、项目展示、友链、关于我页面
+- **🔥 Notes 新增文件自动刷新侧边栏**：在 `docs/src/Notes/` 下新增/删除 `.md` 会自动重启 dev server，侧边栏实时更新
 
-## 📋 开始
+## 🗂️ 项目结构
 
-[点击阅读使用指南](https://example.zbwer.work/)
+```
+my-blog/
+├── docs/                    # VitePress 文档目录
+│   ├── .vitepress/         # 配置和主题文件
+│   │   ├── components/     # 自定义 Vue 组件
+│   │   ├── theme/         # 主题样式文件
+│   │   ├── utils/         # 工具函数
+│   │   └── config.mjs     # 配置文件
+│   └── src/               # 文档源文件
+│       ├── Notes/         # 博客文章目录
+│       │   ├── a-dt/      # 项目开发笔记
+│       │   ├── a-lucky/   # 项目架构相关
+│       │   ├── b-ddd/     # DDD 相关技术
+│       │   ├── b-leetcode/# 算法题解
+│       │   ├── c-Nginx/   # Nginx 配置
+│       │   └── z-Java/    # Java 技术深入
+│       ├── public/        # 静态资源
+│       ├── AboutMe.md     # 关于我页面
+│       ├── Friends.md     # 友情链接
+│       └── index.md       # 首页
+├── package.json           # 项目依赖配置
+├── tailwind.config.js    # Tailwind CSS 配置
+└── tsconfig.json        # TypeScript 配置
+```
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js 16+（22.16可行）
+- npm 或 yarn
+
+### 安装依赖
+
+```bash
+npm install --loglevel=verbose
+```
+
+### 本地开发
+
+```bash
+npm run docs:dev
+```
+
+访问 http://localhost:5173 查看效果。
+
+> 说明：本项目的侧边栏是启动时通过 `docs/.vitepress/utils/getSidebar.ts` 扫描 `docs/src/Notes/` 生成的。
+> 因此 **新增/删除** md 文件需要让配置重新执行一次；`docs:dev` 已经内置 watcher，会在检测到 `Notes` 目录结构变化时自动重启 VitePress。新增文件夹不会更新，但在新增文件夹下新增 .md 文件会触发更新，直接新增文件夹，不在 translations.ts 指定别名时，目录名称就是新增文件夹的名称。
+
+如果你想使用原始 VitePress dev（不带 watcher）：
+
+```bash
+npm run docs:dev:raw
+```
+
+### 构建部署
+
+```bash
+# 构建静态文件
+npm run docs:build
+
+# 预览构建结果
+npm run docs:preview
+
+# 部署到服务器
+npm run docs:deploy
+```
+
+## 📚 内容管理
+
+### 添加新文章
+
+在 `docs/src/Notes/` 目录下创建新的 Markdown 文件，系统会自动生成对应路由。
+
+### 文章分类
+
+所有文章按分类组织在 `Notes/` 目录下：
+- **a-***: 项目开发和实践
+- **b-***: 技术理论和算法
+- **c-***: 工具和配置
+- **z-***: Java 技术深入
+
+### 自定义组件
+
+项目内置了多个实用组件：
+- `LinkCard`: 链接卡片展示
+- `HText`: 标题文本组件
+- 自定义页脚和更新时间显示
+
+## 🛠️ 技术栈
+
+- **框架**: VitePress 1.0.0
+- **前端**: Vue 3, TypeScript
+- **样式**: Tailwind CSS 3.3.3
+- **构建工具**: Vite
+- **数学渲染**: MathJax 3
+- **日期处理**: Day.js
+- **Markdown解析**: gray-matter
+
+## 🌐 相关链接
+
+- [GitHub 主页](https://github.com/cnzhangxy51)
+- [项目示例页面](https://example.zbwer.work/)
+
+## 📄 许可证
+
+MIT License
+
+---
+
+**欢迎交流探讨各种技术问题！** ✨

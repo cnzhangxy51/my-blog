@@ -8,7 +8,8 @@
     "vitepress": "^1.0.0-rc.12"
   },
   "scripts": {
-    "docs:dev": "vitepress dev docs",
+    "docs:dev": "node scripts/vitepress-dev-watch.mjs",
+    "docs:dev:raw": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "docs:deploy": "vitepress build docs && cd docs/.vitepress/ && tar zcf dist.tgz dist && scp dist.tgz root@101.201.101.83:/root/nginx/html/blog && rm -f dist.tgz && ssh root@101.201.101.83 \"cd /root/nginx/html/blog && tar zxf dist.tgz && rm -f dist.tgz\" "

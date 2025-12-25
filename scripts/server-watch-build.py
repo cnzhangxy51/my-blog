@@ -53,6 +53,34 @@ DIST_DIR = (ROOT_DIR / "docs" / ".vitepress" / "dist").resolve()
 
 LOCK_FILE = Path(_env("LOCK_FILE", "/tmp/my-blog-docs-build.lock"))
 
+IGNORED_BASENAMES = {
+    ".DS_Store",
+}
+
+IGNORED_SUFFIXES = (
+    ".swp",
+    ".swx",
+    ".swo",
+    ".tmp",
+    ".temp",
+    "~",
+)
+
+
+def _is_ignored_path(p: str) -> bool:
+    # 忽略隐藏文件/目录，以及常见编辑器临时文件
+    try:
+        name = Path(p).name
+    except Exception:
+        return False
+    if not name:
+        return False
+    if name in IGNORED_BASENAMES:
+        return True
+    if name.startswith("."):
+        return True
+    return any(name.endswith(s) for s in IGNORED_SUFFIXES)
+
 
 class DebouncedBuilder:
     def __init__(self) -> None:
@@ -86,7 +114,15 @@ class DebouncedBuilder:
                     print("[watch-build] 构建中，跳过本次触发")
                     return
 
-            self.build_and_publish()
+            try:
+                self.build_and_publish()
+            except subprocess.CalledProcessError as e:
+                print(f"[watch-build] 构建失败（exit={e.returncode}）：{e.cmd}")
+                print(
+                    "[watch-build] 提示：先在服务器仓库根目录执行 `npm ci` 或 `npm install`（不要用 --omit=dev/--production）。"
+                )
+            except Exception as e:
+                print(f"[watch-build] 构建/发布异常：{e}")
         finally:
             if fp:
                 try:
@@ -143,12 +179,18 @@ class NotesHandler(FileSystemEventHandler):
         # scp/sftp 常见行为：先写临时文件再 rename/move，所以只要 Notes 下有变化就触发
         # 排除一些无关事件可按需加（比如 .swp / .tmp），这里保持简单稳定。
         path = getattr(event, "src_path", "") or ""
+        if _is_ignored_path(path):
+            return
         self.builder.trigger(type(event).__name__, path)
 
 
 def main() -> int:
     if not WATCH_DIR.exists():
         print(f"[watch-build] WATCH_DIR 不存在：{WATCH_DIR}")
+        return 1
+
+    if not (ROOT_DIR / "package.json").exists():
+        print(f"[watch-build] 未找到 package.json，ROOT_DIR 可能不对：{ROOT_DIR}")
         return 1
 
     print(f"[watch-build] ROOT_DIR={ROOT_DIR}")

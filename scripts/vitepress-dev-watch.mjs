@@ -13,20 +13,6 @@ const VITEPRESS_BIN = path.join(
   "vitepress.js"
 );
 
-async function collectDirs(dir, baseDir = dir, out = new Set()) {
-  const entries = await readdir(dir, { withFileTypes: true });
-  for (const ent of entries) {
-    if (ent.name.startsWith(".")) continue;
-    const abs = path.join(dir, ent.name);
-    if (ent.isDirectory()) {
-      const rel = path.relative(baseDir, abs).split(path.sep).join("/");
-      out.add(rel);
-      await collectDirs(abs, baseDir, out);
-    }
-  }
-  return out;
-}
-
 async function collectMdFiles(dir, baseDir = dir, out = new Set()) {
   const entries = await readdir(dir, { withFileTypes: true });
   for (const ent of entries) {
@@ -120,19 +106,10 @@ async function fileExists(absPath) {
   }
 }
 
-async function statSafe(absPath) {
-  try {
-    return await stat(absPath);
-  } catch {
-    return null;
-  }
-}
-
 async function main() {
   const { check } = parseArgs(process.argv);
 
   const mdSet = await collectMdFiles(NOTES_DIR);
-  const dirSet = await collectDirs(NOTES_DIR);
 
   if (check) {
     console.log(
@@ -148,34 +125,20 @@ async function main() {
   // 注意：macOS 支持 recursive；若未来迁移到不支持的平台，可换 chokidar。
   watch(NOTES_DIR, { recursive: true }, async (eventType, filename) => {
     if (!filename) return;
-    if (eventType !== "rename") return;
+    if (!filename.endsWith(".md")) return;
 
     const rel = filename.split(path.sep).join("/");
     const abs = path.join(NOTES_DIR, filename);
 
-    // md 新增/删除
-    if (rel.endsWith(".md")) {
-      const exists = await fileExists(abs);
-      if (exists && !mdSet.has(rel)) {
-        mdSet.add(rel);
-        scheduleRestart("新增", rel);
-      } else if (!exists && mdSet.has(rel)) {
-        mdSet.delete(rel);
-        scheduleRestart("删除", rel);
-      }
-      return;
-    }
+    if (eventType !== "rename") return;
 
-    // 目录新增/删除（用于让 sidebar 分组立即刷新）
-    const st = await statSafe(abs);
-    if (st?.isDirectory() && !dirSet.has(rel)) {
-      dirSet.add(rel);
-      scheduleRestart("新增目录", rel);
-      return;
-    }
-    if (!st && dirSet.has(rel)) {
-      dirSet.delete(rel);
-      scheduleRestart("删除目录", rel);
+    const exists = await fileExists(abs);
+    if (exists && !mdSet.has(rel)) {
+      mdSet.add(rel);
+      scheduleRestart("新增", rel);
+    } else if (!exists && mdSet.has(rel)) {
+      mdSet.delete(rel);
+      scheduleRestart("删除", rel);
     }
   });
 

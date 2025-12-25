@@ -66,6 +66,13 @@ IGNORED_SUFFIXES = (
     "~",
 )
 
+IGNORED_EVENT_TYPES = {
+    # 这些是“读文件”产生的事件：vitepress build 会大量读取 md/图片，导致刷屏/误触发
+    "opened",
+    "closed",
+    "closed_no_write",
+}
+
 
 def _is_ignored_path(p: str) -> bool:
     # 忽略隐藏文件/目录，以及常见编辑器临时文件
@@ -178,6 +185,9 @@ class NotesHandler(FileSystemEventHandler):
     def on_any_event(self, event) -> None:  # noqa: ANN001
         # scp/sftp 常见行为：先写临时文件再 rename/move，所以只要 Notes 下有变化就触发
         # 排除一些无关事件可按需加（比如 .swp / .tmp），这里保持简单稳定。
+        et = getattr(event, "event_type", "") or ""
+        if et in IGNORED_EVENT_TYPES:
+            return
         path = getattr(event, "src_path", "") or ""
         if _is_ignored_path(path):
             return

@@ -83,6 +83,32 @@ npm run docs:preview
 npm run docs:deploy
 ```
 
+## 🚀 服务器：只 scp 到 Notes 即自动构建发布（适合“只想传文件”的流程）
+
+> 结论：Nginx 只负责服务 `dist` 静态文件，它不会直接把 `Notes/*.md` 当网页。
+> 想要“scp 到 Notes 就自动更新网站”，需要在服务器上常驻一个 watcher：监听文件变化 -> 自动 `npm run docs:build` -> 发布 `dist` 到 Nginx 目录。
+
+### 1) 服务器准备（一次性）
+
+- Node/npm：能在仓库根目录执行 `npm run docs:build`
+- Python 版依赖：`pip install watchdog`
+
+### 2) 前台试跑 watcher（推荐先这样验证）
+
+在服务器仓库根目录执行：
+
+- **Python 版**（不用 inotifywait，但需要 watchdog）：
+
+```bash
+pip install watchdog
+python3 scripts/server-watch-build.py
+```
+
+之后你只要把文件上传到服务器的 `docs/src/Notes/`（例如用 `scp`/`sftp`），它就会自动触发：
+
+- `npm run docs:build`
+- 把 `docs/.vitepress/dist` 原子发布到 `OUTPUT_DIR`（默认：`/root/nginx/volumes/html/blog/dist`）
+
 ## 📚 内容管理
 
 ### 添加新文章

@@ -188,6 +188,16 @@ class NotesHandler(FileSystemEventHandler):
         et = getattr(event, "event_type", "") or ""
         if et in IGNORED_EVENT_TYPES:
             return
+
+        # 忽略 DirModifiedEvent（目录自身 mtime 变化），避免刷屏/无意义触发
+        # 仍然保留文件的 create/modify/delete/move
+        if getattr(event, "is_directory", False) and et == "modified":
+            return
+
+        # 忽略 FileCreatedEvent（新增文件事件）
+        if not getattr(event, "is_directory", False) and et == "created":
+            return
+
         path = getattr(event, "src_path", "") or ""
         if _is_ignored_path(path):
             return

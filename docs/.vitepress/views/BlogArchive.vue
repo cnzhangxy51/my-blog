@@ -44,23 +44,25 @@
 </template>
 
 <script setup lang="ts">
-import { useData } from "vitepress";
-import { data as posts } from "../utils/article.data.js";
-import PostCard from "./BlogArchivePostCard.vue";
+import { computed } from "vue";
+import { useData, useRoute } from "vitepress";
 import Sidebar from "./BlogArchiveSidebar.vue";
 
-// 获取标题 / 分类 / 推荐阅读
+const route = useRoute();
 const { frontmatter: pageData, theme } = useData();
 const { hero, types, features, flow } = pageData.value;
 
-// 根据当前 page 名称获取 sidebar 数据并构造相应的类别
-const pathname = window.location.pathname;
-const sidebarData = theme.value.sidebar?.[pathname];
-const categories =
-  types || sidebarData?.items.map((item: any) => ({ name: item.text, link: item.link }));
+function resolveSidebarForPath(sidebar: any, p: string) {
+  if (!sidebar || typeof sidebar !== "object") return undefined;
+  // VitePress sidebar 常见形态：{ "/Notes/": {...}, "/foo/": {...} }，按“最长前缀匹配”
+  const keys = Object.keys(sidebar).sort((a, b) => b.length - a.length);
+  const key = keys.find((k) => p.startsWith(k));
+  return key ? sidebar[key] : undefined;
+}
 
-// 根据 url 获取推荐阅读文章信息
-// const featuresPost = features.map((url: string) =>
-//   posts.find((post) => post.url === url)
-// );
+const categories = computed(() => {
+  if (types) return types;
+  const sidebarData = resolveSidebarForPath(theme.value.sidebar, route.path);
+  return sidebarData?.items?.map((item: any) => ({ name: item.text, link: item.link }));
+});
 </script>
